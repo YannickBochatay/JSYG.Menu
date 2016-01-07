@@ -1,8 +1,7 @@
 ul.jsyg-menu {
     position:absolute;
-    background-color:#F1F1F1;
+    background-color:white;
     border:1px solid gray;
-    z-index:10;
     border-radius:2px;
     box-shadow: 2px 1px 1px gray;
     list-style:none;
@@ -10,49 +9,37 @@ ul.jsyg-menu {
     margin:0;
     line-height:normal;
 }
-
 ul.jsyg-menu li {
-    margin:3px 0px;
+    margin:0px;
     white-space: nowrap;
+    line-height: 140%;
 }
 ul.jsyg-menu li.divider {
     border-bottom:1px solid #ccc;
     width:100%;
 }
 ul.jsyg-menu a {
-    color:black;
-    font-family:helvetica;
+    color:#333;
     text-decoration:none;
-    font-size:12px;
     display:block;
-    padding:2px 5px 2px 27px;
+    padding:2px 5px;
     background-position:5px 50%;
     background-size:16px 16px;
     background-repeat:no-repeat;
     position:relative;
     cursor:default;
 }
-ul.jsyg-menu a:focus{
+ul.jsyg-menu a i.menuIcon, ul.jsyg-menu .menuCheckbox {
+    display:inline-block;
+    width:1.5em;
+}
+ul.jsyg-menu a:focus {
     background-color:#e5ecff;
 }
-ul.jsyg-menu a img{
-    border:0;
-    float:right;
-    margin:4px 0px 0px 5px;
-}
-ul.jsyg-menu a input {
-    vertical-align:middle;
-    position:absolute;
-    left:6px;
-    cursor:default;
-}
 ul.jsyg-menu span.globalShortcut{
-    float:right;
-    margin:0px 0px 0px 15px;
     color:gray;
-}
-ul.jsyg-menu span.shortCut{
-    text-decoration:underline;	
+    display: inline-block;
+    float: right;
 }
 ul.jsyg-menu span.menuLabel{
     margin-right: 15px;
@@ -61,7 +48,6 @@ ul.jsyg-menu span.submenuArrow{
     display: inline-block;
     float: right;
     font-size: 9px;
-    margin-top: 1px;
 }
 ul.jsyg-menu a.disabled {
     color:gray;

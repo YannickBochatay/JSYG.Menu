@@ -6,7 +6,7 @@
     if (typeof define != "undefined" && define.amd) define("jsyg-menu",["jquery","jsyg-stdconstruct","jquery-hotkeys"],factory);
     else if (typeof jQuery != "undefined") {
         
-        if (typeof JSYG!= "undefined" && typeof JSYG.StdConstruct != "undefined") factory(jQuery,StdConstruct);
+        if (typeof JSYG!= "undefined" && typeof JSYG.StdConstruct != "undefined") factory(jQuery,JSYG.StdConstruct);
         else if (typeof StdConstruct != "undefined") {
             if (root.JMenu !== undefined) throw new Error("conflict with JMenu variable");
             root.JMenu = factory(jQuery,StdConstruct);
@@ -18,7 +18,7 @@
 })(this,function($,StdConstruct) {
     
     "use strict";
-        
+    
     /**
      * Constructeur d'éléments de menu
      * @param arg optionnel, argument jQuery pointant vers l'élément DOM. Si non défini il sera créé (balise "a").
@@ -26,7 +26,7 @@
      * @returns {MenuItem}
      * @see {Menu}
      */
-     function MenuItem(arg,opt) {
+    function MenuItem(arg,opt) {
         
         if ($.isPlainObject(arg)) { opt = arg; arg = null; }
         
@@ -99,7 +99,7 @@
         shortCut : null,
         
         globalShortCut : null,
-        
+               
         /**
          * Ajout de l'élément à un menu contextuel (instance de Menu)
          * @param contextmenu instance de Menu ou ContextItem (pour un sous-menu)
@@ -119,7 +119,7 @@
             return this;
         }
     };
-    
+       
     if (typeof JSYG != "undefined") JSYG.MenuItem = MenuItem;
     
     /**
@@ -203,6 +203,10 @@
      */
     Menu.prototype.classLabel = "menuLabel";
     /**
+     * Classe à appliquer aux span simulant une checkbox
+     */
+    Menu.prototype.classCheckbox = "menuCheckbox";
+    /**
      * Classe à appliquer aux éléments affichant un sous-menu
      */
     Menu.prototype.classDivider = "divider";
@@ -241,26 +245,26 @@
      */	
     Menu.prototype.enabled = false;
     
-    Menu.prototype.enableShortCut = function(item) {
+    Menu.prototype._enableGlobalShortCut = function(item) {
         
         var that = this;
         
-        this.disableShortCut(item);
-    
+        this._disableGlobalShortCut(item);
+        
         function action(e) {
             that.triggerItem(item,e);
             if (!this.keepMenu) that.hide();
         };
         
         item._shortCutAction = action.bind(item);
-    
-        $(document).on("keydown",null,keys,item._shortCutAction);
+        
+        $(document).on("keydown",null,item.globalShortCut,item._shortCutAction);
         
         return this;
     };
     
-    Menu.prototype.disableShortCut = function(item) {
-      
+    Menu.prototype._disableGlobalShortCut = function(item) {
+        
         if (item._shortCutAction) $(document).off("keydown",item._shortCutAction);
     };
     
@@ -286,7 +290,7 @@
                 
                 this.list.splice(ind,0,item);
                 
-                if (item.globalShortCut) this.enableShortCut(item);
+                if (item.globalShortCut) this._enableGlobalShortCut(item);
             }
             else throw new Error("L'item existe déjà");
         }
@@ -315,7 +319,7 @@
         
         var i = this.list.indexOf(item);
         
-        if (item._globalShortCut) this.disableShortCut(item);
+        if (item.globalShortCut) this._disableGlobalShortCut(item);
         this.list.splice(i,1);
         
         return this;
@@ -388,13 +392,9 @@
         
         if (item.keepMenu) e.stopPropagation();
         
-        var val,node,menu,
-        input = $(item.container).find('input');
+        var node,menu;
         
-        if (input) {
-            val = !input.val();
-            input.val(val);
-        }
+        if (item.checkbox) this._checkItem(item,!item.checked);
         
         node = this.node,
         menu = this;
@@ -405,7 +405,7 @@
             node = menu && menu.node;
         }
         
-        item.action.call(node,e,val);
+        item.action.call(node,e,item.checked);
         
         //s'il s'agit d'un sous-menu, il faut propager l'événement jusqu'au menu racine.
         menu = this;
@@ -416,7 +416,7 @@
         }
         
         if (!item.keepMenu) this.hideAll();
-        
+                
         return this;
     };
     
@@ -445,27 +445,27 @@
         
         item = this.getItem(item);
         
-        var jNode = $(item.container).parent();
-    
-        item.submenu.parent = jNode[0];
+        var li = $(item.container).parent();
         
-        $(item.submenu).css('visibility','hidden');
+        item.submenu.parent = li[0];
+        
+        $(item.submenu.node).css('visibility','hidden');
         
         item.submenu.show(delay,function(ul) {
             
             var sub = $(ul),
             $win = $(window),
-            posLi = jNode.position(),
-            offsetLi = jNode.offset(),
+            posLi = li.position(),
+            offsetLi = li.offset(),
             widthSub = sub.outerWidth(),
             heightSub = sub.outerHeight(),
-            x = posLi.left + jNode.outerWidth(),
+            x = posLi.left + li.outerWidth(),
             y = posLi.top;
-                        
-            if (offsetLi.left + jNode.outerWidth() + widthSub > $win.innerWidth()) x = posLi.left - widthSub;
             
-            if (offsetLi.top + heightSub > $win.innerHeight()) y = posLi.top + jNode.height() - heightSub;
-                        
+            if (offsetLi.left + li.outerWidth() + widthSub > $win.innerWidth()) x = posLi.left - widthSub;
+            
+            if (offsetLi.top + heightSub > $win.innerHeight()) y = posLi.top + li.height() - heightSub;
+            
             sub.css({left:x,top:y}).css('visibility','visible');
         });
         
@@ -476,7 +476,7 @@
     var keys =  ['Enter','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Escape'];
     
     Menu.prototype._keyboardAction = function(e) {
-                
+        
         var shortcuts = [],current,that = this;
         
         this.list.forEach(function(item) {
@@ -527,7 +527,17 @@
             
             default :
                 this.list.forEach(function(item) {
-                    if (item.shortCut && item.shortCut.toLowerCase() == e.key) { that.triggerItem(item,e); return false; }
+                    
+                    if (item.shortCut && item.shortCut == e.key) {
+                        
+                        if (item.action) that.triggerItem(item,e);
+                        
+                        if (item.submenu) {
+                            that.focusItem(item);
+                            that.showSubmenu(item);
+                            item.submenu.focusItem(0);
+                        }
+                    }
                 });
                 break;
         }
@@ -576,7 +586,14 @@
         return false;
     }
     
+    Menu.prototype._checkItem = function(item,value) {
+      
+        item.checked = Boolean(value);
         
+        $(item.container).find('span.'+this.classCheckbox).text(item.checked ? '\u2611' : '\u2610');
+    };
+    
+    
     Menu.prototype.create = function() {
 	
         var that = this;
@@ -589,10 +606,10 @@
                 contextmenu : function(e) { e.preventDefault(); },
                 mousedown : function(e) { e.stopPropagation(); },
                 mouseout : function(e) {
-                    if (isChildOf(e.target,this)) return;
-                    that.blur();
-                }
-            });
+                if (isChildOf(e.target,this)) return;
+                that.blur();
+            }
+        });
         
         this.list.forEach(function(item,ind) {
             
@@ -602,45 +619,45 @@
             
             var li = $('<li>').appendTo(jCont),
             jA = $(item.container).attr("href","#").appendTo(li),
-            input;
-                        
+            icon;
+            
             jA.on("click",function(e) { e.preventDefault(); });
             
-            if (item.icon) jA.css('background-image','url('+item.icon+')');
+            if (item.checkbox) {
+                
+                $('<span>').addClass(that.classCheckbox).prependTo(jA);
+                that._checkItem(item,item.checked);
+            }
+            else {
+            
+                icon = $('<i>').addClass('menuIcon').appendTo(jA);
+            
+                if (item.icon) icon.addClass(item.icon);
+            }
             
             if (item.text) {
-                                
-                if (item.shortCut && (typeof item.action === 'function')) {
+                
+                if (item.shortCut) {
                     
                     var html = item.text
                         .replace(/\s/g,'&nbsp;')
-                        .replace( new RegExp(item.shortCut,'i') , function(sub) { return '<span>'+sub+'</span>'; } );
+                        .replace( new RegExp(item.shortCut,'i') , function(sub) { return '<u>'+sub+'</u>'; } );
                     
-                    jA.html(html);
-                    jA.find('span').addClass(that.classShortCut);
+                    $('<span>').addClass(that.classLabel).html(html).appendTo(jA);
+                    jA.find('u').addClass(that.classShortCut);
                 }
                 else {
                     $('<span>').addClass(that.classLabel).text(item.text).appendTo(jA);
                 }
             }
-           
-            if (item.checkbox) {
-                
-                input = $('<input>')
-                    .attr({type:"checkbox",name:'test'})
-                    .prependTo(jA);
-                
-                if (item.checked) input.attr("checked","checked");
-            }
-            
+                        
             if (item.globalShortCut && (typeof item.action === 'function')) {
                 
                 $('<span>')
                     .addClass(that.classGlobalShortCut)
                     .text(item.globalShortCut)
-                    .appendTo(jA);
+                    .prependTo(jA);
             }
-            
             
             if (item.disabled) {
                 
@@ -651,8 +668,6 @@
                         that.hideSubmenus();
                     }
                 });
-                
-                if (item.checkbox) input.attr("disable","disable"); 
             }
             else if (item.submenu) {
                 
@@ -675,15 +690,6 @@
                 item.submenu.create();
             }
             else if (typeof item.action === 'function') {
-                                
-                if (item.checkbox) {
-                    
-                    input.on('mousedown',function(e) {
-                        e.preventDefault();
-                        that.triggerItem(item,e);
-                        if (!item.keepMenu) that.hide();
-                    });
-                }
                 
                 jA.on({
                     click:function(e) {
@@ -799,7 +805,34 @@
     };
     
     if (typeof JSYG != "undefined") JSYG.Menu = Menu;
+    
+    $.fn.jMenu = function() {
         
+        var args = arguments;
+        
+        this.each(function() {
+            
+            var $this = $(this),
+                jMenu = $this.data("jMenu"),
+                arg0 = args[0],
+                arg1 = args[1];
+            
+            if (!jMenu) {
+                jMenu = new Menu(this);
+                $this.data("jMenu",jMenu);
+            }
+            
+            if (typeof arg0 == "string") jMenu[arg0](arg1);
+            else if (Array.isArray(arg0) || $.isPlainObject(arg0)) {
+                jMenu.set(arg0);
+                jMenu.create();
+            }
+            
+        });
+        
+        return this;
+    }
+    
     return Menu;
     
 });

@@ -9,11 +9,15 @@
     ],
     "dependencies": {
         "jquery":"latest",
+        "jQuery.Hotkeys":"latest",
         "jsyg-stdconstruct":"latest"
     },
     "devDependencies": {
+        "jsyg": "latest",
         "qunit": "latest",
-        "requirejs": "latest"
+        "requirejs": "latest",
+        "bootstrap":"latest",
+        "fontawesome":"latest"
     },
     "repository": {
         "type": "git",
