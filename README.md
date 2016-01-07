@@ -1,10 +1,17 @@
 # JSYG.Menu
 Menu plugin for JSYG framework
 
-[demo](http://yannickbochatay.github.io/JSYG.Menu/)
+##### Demo
+[http://yannickbochatay.github.io/JSYG.Menu/](http://yannickbochatay.github.io/JSYG.Menu/)
 
+##### Installation
+```shell
+bower install jsyg-menu
+```
+
+##### Example
 ```javascript
-$('#ulElement')jMenu([{
+$('#ulElement').jMenu([{
     text:"element 1",
     shortCut:"t",
     icon:"fa fa-modx",
