@@ -1,5 +1,6 @@
 # JSYG.Menu
-Menu plugin for JSYG framework
+Menu plugin originally designed for [JSYG framework](https://github.com/YannickBochatay/JSYG), but it works as well as a jQuery plugin.
+Fits well with Bootstrap.
 
 [demo](http://yannickbochatay.github.io/JSYG.Menu/)
 
