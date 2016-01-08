@@ -9,6 +9,7 @@
             
         <script src="bower_components/jquery/dist/jquery.js"></script>
         <script src="bower_components/jQuery.Hotkeys/jquery.hotkeys.js"></script>
+        <script src="bower_components/jsyg/JSYG.js"></script>
         <script src="bower_components/jsyg-events/JSYG.Events.js"></script>
         <script src="bower_components/jsyg-stdconstruct/JSYG.StdConstruct.js"></script>
         <script src="JSYG.Menu.js"></script>
@@ -71,8 +72,9 @@
                     text:"element with submenu and shortcut",
                     shortcut:"s",
                     submenu:[{
-                            text:"checkbox element",
+                            text:"checkbox element, keep menu visible",
                             checkbox:true,
+                            keepMenu:true,
                             action:function(e,val) {
                                 alert("checkbox is "+ (val ? '' : 'un') + "checked")
                             }

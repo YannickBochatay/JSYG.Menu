@@ -136,7 +136,7 @@
          */
         if (!arg) arg = document.createElement('ul');
         
-        if (arg) this.node = $(arg)[0];
+        if (arg) this.container = $(arg)[0];
         /**
          * Tableau d'objets MenuItem définissant la liste des éléments du menu
          */
@@ -396,13 +396,13 @@
         
         if (item.checkbox) this._checkItem(item,!item.checked);
         
-        node = this.node,
+        node = this.container,
         menu = this;
         
         //on récupère l'élément
         while (!node && menu) {
             menu = menu.parentMenu;
-            node = menu && menu.node;
+            node = menu && menu.container;
         }
         
         item.action.call(node,e,item.checked);
@@ -449,7 +449,7 @@
         
         item.submenu.parent = li[0];
         
-        $(item.submenu.node).css('visibility','hidden');
+        $(item.submenu.container).css('visibility','hidden');
         
         item.submenu.show(delay,function(ul) {
             
@@ -600,7 +600,7 @@
         
         this._clear();
         
-        var jCont = $(this.node)
+        var jCont = $(this.container)
             .addClass(this.className)
             .on({
                 contextmenu : function(e) { e.preventDefault(); },
@@ -712,7 +712,7 @@
         
         var classDisabled = this.classDisabled;
         this.list.forEach(function(elmt) { $(elmt.container).removeClass(classDisabled).empty().remove(); });
-        $(this.node).empty();
+        $(this.container).empty();
         this.keyboardCtrls.disable();
     };
     
@@ -729,7 +729,7 @@
         
         this.hide();
         
-        $(this.node).appendTo(this.parent);
+        $(this.container).appendTo(this.parent);
         
         this.parentMenu && this.parentMenu.keyboardCtrls.disable();
         
@@ -737,7 +737,7 @@
         
         this.display = true;
         
-        callback && callback(this.node);
+        callback && callback(this.container);
         
         this.trigger('show');
         
@@ -768,7 +768,7 @@
         
         this.keyboardCtrls.disable();
         
-        $(this.node).detach();
+        $(this.container).detach();
         
         this.keyboardCtrls.disable();
         
