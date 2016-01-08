@@ -96,9 +96,9 @@
         checkbox : false,
         checked : false,
         
-        shortCut : null,
+        shortcut : null,
         
-        globalShortCut : null,
+        globalShortcut : null,
                
         /**
          * Ajout de l'élément à un menu contextuel (instance de Menu)
@@ -193,11 +193,11 @@
     /**
      * Classe à appliquer aux span précisant le raccourci global
      */
-    Menu.prototype.classGlobalShortCut = "globalShortcut";
+    Menu.prototype.classGlobalShortcut = "globalShortcut";
     /**
      * Classe à appliquer aux span précisant le raccourci
      */
-    Menu.prototype.classShortCut = "shortCut";
+    Menu.prototype.classShortcut = "shortcut";
     /**
      * Classe à appliquer aux span précisant le label
      */
@@ -245,27 +245,27 @@
      */	
     Menu.prototype.enabled = false;
     
-    Menu.prototype._enableGlobalShortCut = function(item) {
+    Menu.prototype._enableGlobalShortcut = function(item) {
         
         var that = this;
         
-        this._disableGlobalShortCut(item);
+        this._disableGlobalShortcut(item);
         
         function action(e) {
             that.triggerItem(item,e);
             if (!this.keepMenu) that.hide();
         };
         
-        item._shortCutAction = action.bind(item);
+        item._shortcutAction = action.bind(item);
         
-        $(document).on("keydown",null,item.globalShortCut,item._shortCutAction);
+        $(document).on("keydown",null,item.globalShortcut,item._shortcutAction);
         
         return this;
     };
     
-    Menu.prototype._disableGlobalShortCut = function(item) {
+    Menu.prototype._disableGlobalShortcut = function(item) {
         
-        if (item._shortCutAction) $(document).off("keydown",item._shortCutAction);
+        if (item._shortcutAction) $(document).off("keydown",item._shortcutAction);
     };
     
     Menu.prototype.createItem = function(arg,opt) {
@@ -290,7 +290,7 @@
                 
                 this.list.splice(ind,0,item);
                 
-                if (item.globalShortCut) this._enableGlobalShortCut(item);
+                if (item.globalShortcut) this._enableGlobalShortcut(item);
             }
             else throw new Error("L'item existe déjà");
         }
@@ -319,7 +319,7 @@
         
         var i = this.list.indexOf(item);
         
-        if (item.globalShortCut) this._disableGlobalShortCut(item);
+        if (item.globalShortcut) this._disableGlobalShortcut(item);
         this.list.splice(i,1);
         
         return this;
@@ -480,8 +480,8 @@
         var shortcuts = [],current,that = this;
         
         this.list.forEach(function(item) {
-            if (item.shortCut) {
-                shortcuts.push(item.shortCut);
+            if (item.shortcut) {
+                shortcuts.push(item.shortcut);
             }
         });
         
@@ -528,7 +528,7 @@
             default :
                 this.list.forEach(function(item) {
                     
-                    if (item.shortCut && item.shortCut == e.key) {
+                    if (item.shortcut && item.shortcut == e.key) {
                         
                         if (item.action) that.triggerItem(item,e);
                         
@@ -637,25 +637,25 @@
             
             if (item.text) {
                 
-                if (item.shortCut) {
+                if (item.shortcut) {
                     
                     var html = item.text
-                        .replace(/\s/g,'&nbsp;')
-                        .replace( new RegExp(item.shortCut,'i') , function(sub) { return '<u>'+sub+'</u>'; } );
+                        //.replace(/\s/g,'&nbsp;')
+                        .replace( new RegExp(item.shortcut,'i') , function(sub) { return '<u>'+sub+'</u>'; } );
                     
                     $('<span>').addClass(that.classLabel).html(html).appendTo(jA);
-                    jA.find('u').addClass(that.classShortCut);
+                    jA.find('u').addClass(that.classShortcut);
                 }
                 else {
                     $('<span>').addClass(that.classLabel).text(item.text).appendTo(jA);
                 }
             }
                         
-            if (item.globalShortCut && (typeof item.action === 'function')) {
+            if (item.globalShortcut && (typeof item.action === 'function')) {
                 
                 $('<span>')
-                    .addClass(that.classGlobalShortCut)
-                    .text(item.globalShortCut)
+                    .addClass(that.classGlobalShortcut)
+                    .text(item.globalShortcut)
                     .prependTo(jA);
             }
             

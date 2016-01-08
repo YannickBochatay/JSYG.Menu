@@ -5,12 +5,48 @@ Fits well with Bootstrap.
 [demo](http://yannickbochatay.github.io/JSYG.Menu/)
 
 ```javascript
-$('#ulElement')jMenu([{
+//basic Menu
+$('#ulElement').jMenu([{
     text:"element 1",
-    shortCut:"t",
     icon:"fa fa-modx",
+    action:function() {
+        alert("click on element 1");
+    }
+},{
+    text:"element 2",
+    icon:"fa fa-bug",
+    action:function() {
+        alert("click on element 2");
+    }
+}])
+.jMenu("show");
+
+//advanced Menu
+$('#ulElement').jMenu([{
+    text:"simple element",
+    icon:"fa fa-modx",
+    action:function() {
+        alert("click on simple element");
+    }
+},{
+    text:"element with keyboard shortcut",
+    shortcut:"k",
+    icon:"fa fa-bar-chart",
+    action : function(e) {
+        alert(e.type+' on element');
+    }
+},{
+    text:"element with global keyboard shortcut",
+    icon:"fa fa-bug",
+    action : function(e) {
+        alert(e.type+' on element');
+    },
+    globalShortcut:"ctrl+d"
+},{
+    text:"element with sub-menu",
+    icon:"fa fa-book",
     submenu:[{
-            text:"sub-element 1",
+            text:"disabled element",
             action : function() {
                 alert("click on sub-element 1");
             },
@@ -31,28 +67,20 @@ $('#ulElement')jMenu([{
                 }]
         }]
 },{
-    text:"element 2",
-    icon:"fa fa-bug",
-    action : function() {
-        alert("tata");
-    },
-    globalShortCut:"ctrl+d"
-},{
-    text:"element 3",
-    icon:"fa fa-book",
-    submenu:[
-        {
-            text:"sub-element 1",
-            action : function() {
-                alert("click on sub-element 1");
+    text:"element with submenu and shortcut",
+    shortcut:"s",
+    submenu:[{
+            text:"checkbox element",
+            checkbox:true,
+            action:function(e,val) {
+                alert("checkbox is "+ (val ? '' : 'un') + "checked")
             }
         },{
-            text:"sub-element 2",
+            text:"sub-sub-element 2",
             action : function() {
-                alert("click on sub-element 1");
+                alert("click on sub-sub-element 2");
             }
-        }
-    ]
+        }] 
 },{
     text:"checkbox element",
     checkbox:true,
@@ -60,5 +88,6 @@ $('#ulElement')jMenu([{
     action:function(e,val) {
         alert("checkbox is "+ (val ? '' : 'un') + "checked")
     }
-}]);
+}])
+.jMenu("show");
 ```
