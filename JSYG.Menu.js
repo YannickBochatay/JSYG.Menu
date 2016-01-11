@@ -55,7 +55,10 @@
                     if (n == 'submenu' && Array.isArray(opt.submenu)) {
                         
                         submenu = new Menu();
-                        opt.submenu.forEach(function(item) { submenu.addItem(item); });
+                        opt.submenu.forEach(function(item) {
+                            if (item == "divider") submenu.addDivider();
+                            else submenu.addItem(item);
+                        });
                         this.submenu = submenu;
                     }
                     else cible[n] = opt[n];
@@ -163,7 +166,10 @@
         
         if (Array.isArray(opt)) {
             this.clear();
-            opt.forEach(function(item) { that.addItem(item); });
+            opt.forEach(function(item) {
+                if (item == "divider") that.addDivider();
+                else that.addItem(item);
+            });
             return cible;
         }
         
@@ -277,6 +283,7 @@
         
         return new MenuItem(arg,opt);
     }
+  
     /**
      * Ajout d'un élément au menu
      * @param item instance de MenuItem ou plainObject avec les options nécessaires
@@ -287,7 +294,7 @@
         
         if (ind == null) ind = this.list.length;
         
-        if ($.isPlainObject(item)) item = new MenuItem(item);		
+        if ($.isPlainObject(item)) item = new MenuItem(item);	
         
         if (item instanceof MenuItem) {
             
