@@ -29,7 +29,7 @@ ul.jsyg-menu a {
     position:relative;
     cursor:default;
 }
-ul.jsyg-menu a i.menuIcon, ul.jsyg-menu .menuCheckbox {
+ul.jsyg-menu a .menuIcon, ul.jsyg-menu .menuCheckbox {
     display:inline-block;
     width:1.5em;
 }

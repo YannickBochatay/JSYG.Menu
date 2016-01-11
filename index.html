@@ -39,14 +39,14 @@
                     }
                 },{
                     text:"element with global keyboard shortcut",
-                    icon:"fa fa-bug",
+                    icon: $('<img>').attr("src","icon.png"),
                     action : function(e) {
                         alert(e.type+' on element');
                     },
                     globalShortcut:"ctrl+d"
                 },{
                     text:"element with sub-menu",
-                    icon:"fa fa-book",
+                    icon:$('<img>').attr("src","icon.svg"),
                     submenu:[{
                             text:"disabled element",
                             action : function() {
