@@ -65,7 +65,8 @@
             return cible;
         },
         /**
-         * url de l'icone
+         * si chaine de caractère, crée un élément i et applique la classe définie par cette chaine (utile pour glyphicon, font-awesome, etc)
+         * si element DOM ou jQuery ou JSYG, utilise cet élément
          */
         icon:null,
         /**
@@ -190,6 +191,10 @@
      * Classe à appliquer aux sous-menus
      */
     Menu.prototype.classSubmenu = "submenu";
+    /**
+     * Classe appliquée aux icones
+     */
+    Menu.prototype.classIcon = 'menuIcon';
     /**
      * Classe à appliquer aux span précisant le raccourci global
      */
@@ -629,10 +634,12 @@
                 that._checkItem(item,item.checked);
             }
             else {
-            
-                icon = $('<i>').addClass('menuIcon').appendTo(jA);
-            
-                if (item.icon) icon.addClass(item.icon);
+                
+                icon = (!item.icon || typeof item.icon == "string") ? $('<i>') : $(item.icon);
+                
+                icon.addClass(that.classIcon).appendTo(jA);
+                
+                if (typeof item.icon == "string") icon.addClass(item.icon);
             }
             
             if (item.text) {
