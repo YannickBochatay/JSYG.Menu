@@ -118,6 +118,14 @@
             menu.addItem(this,ind);
             
             return this;
+        },
+        
+        clone : function() {
+            
+            var item = Object.create(this);
+            item.container = $(this.container).clone();
+            item.globalShortcut = null;
+            return item;
         }
     };
        
@@ -276,7 +284,8 @@
     Menu.prototype.createItem = function(arg,opt) {
         
         return new MenuItem(arg,opt);
-    }
+    };
+      
     /**
      * Ajout d'un élément au menu
      * @param item instance de MenuItem ou plainObject avec les options nécessaires
