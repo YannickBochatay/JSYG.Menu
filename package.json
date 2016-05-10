@@ -1,6 +1,6 @@
 {
   "name": "jsyg-menu",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "general menu for jsyg framework or standalone with jQuery",
   "main": "JSYG.Menu.js",
   "directories": {
@@ -32,6 +32,6 @@
   },
   "devDependencies": {
     "bootstrap": "^3.3.6",
-    "fontawesome": "^4.5.0"
+    "font-awesome": "^4.5.0"
   }
 }
