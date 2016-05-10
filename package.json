@@ -1,0 +1,37 @@
+{
+  "name": "jsyg-menu",
+  "version": "0.4.3",
+  "description": "general menu for jsyg framework or standalone with jQuery",
+  "main": "JSYG.Menu.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/YannickBochatay/JSYG.Menu.git"
+  },
+  "keywords": [
+    "svg",
+    "jquery",
+    "javascript",
+    "library"
+  ],
+  "author": "Yannick Bochatay",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/YannickBochatay/JSYG.Menu/issues"
+  },
+  "homepage": "https://github.com/YannickBochatay/JSYG.Menu#readme",
+  "dependencies": {
+    "jquery": "^2.2.3",
+    "jquery.hotkeys": "^0.1.0",
+    "jsyg-stdconstruct": "^0.1.4"
+  },
+  "devDependencies": {
+    "bootstrap": "^3.3.6",
+    "fontawesome": "^4.5.0"
+  }
+}

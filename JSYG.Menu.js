@@ -3,7 +3,14 @@
 
 (function(root,factory) {
     
-    if (typeof define != "undefined" && define.amd) define("jsyg-menu",["jquery","jsyg-stdconstruct","jquery-hotkeys"],factory);
+    if (typeof module == "object" && typeof module.exports == "object") {
+      
+      module.exports = factory( require("jquery"), require("jsyg-stdconstruct"), require("jquery.hotkeys") );
+    }
+    else if (typeof define != "undefined" && define.amd) {
+      
+      define("jsyg-menu",["jquery","jsyg-stdconstruct","jquery.hotkeys"],factory);
+    }
     else if (typeof jQuery != "undefined") {
         
         if (typeof JSYG!= "undefined" && typeof JSYG.StdConstruct != "undefined") factory(jQuery,JSYG.StdConstruct);
