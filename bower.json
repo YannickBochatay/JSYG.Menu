@@ -2,8 +2,9 @@
     "name": "jsyg-menu",
     "authors" : ["Yannick Bochatay"],
     "description" : "general menu for jsyg framework or standalone with jQuery",
-    "main": ["JSYG.Menu.js","JSYG.Menu.css"],
+    "main": "JSYG.Menu.js",
     "moduleType": [
+        "node",
         "amd",
         "globals"
     ],
@@ -14,8 +15,6 @@
     },
     "devDependencies": {
         "jsyg": "latest",
-        "qunit": "latest",
-        "requirejs": "latest",
         "bootstrap":"latest",
         "fontawesome":"latest"
     },

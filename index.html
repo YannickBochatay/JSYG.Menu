@@ -3,14 +3,15 @@
     <head>
         <meta charset="utf-8">
         <title>JSYG tests</title>
-        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
-        <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.css"/>
+        
+        <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css"/>
+        <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.css"/>
         <link rel="stylesheet" href="JSYG.Menu.css">
             
-        <script src="bower_components/jquery/dist/jquery.js"></script>
-        <script src="bower_components/jQuery.Hotkeys/jquery.hotkeys.js"></script>
-        <script src="bower_components/jsyg-events/JSYG.Events.js"></script>
-        <script src="bower_components/jsyg-stdconstruct/JSYG.StdConstruct.js"></script>
+        <script src="node_modules/jquery/dist/jquery.js"></script>
+        <script src="node_modules/jquery.hotkeys/jquery.hotkeys.js"></script>
+        <script src="node_modules/jsyg-events/JSYG.Events.js"></script>
+        <script src="node_modules/jsyg-stdconstruct/JSYG.StdConstruct.js"></script>
         <script src="JSYG.Menu.js"></script>
     </head>
     <body>
@@ -44,7 +45,7 @@
                     },
                     globalShortcut:"ctrl+d"
                 },{
-                    text:"element with sub-menu and svg icon",
+                    text:"element with sub-menu",
                     icon:$('<img>').attr("src","icon.svg"),
                     submenu:[{
                             text:"disabled element",
@@ -77,8 +78,9 @@
                     text:"element with submenu and shortcut",
                     shortcut:"s",
                     submenu:[{
-                            text:"checkbox element",
+                            text:"checkbox element, keep menu visible",
                             checkbox:true,
+                            keepMenu:true,
                             action:function(e,val) {
                                 alert("checkbox is "+ (val ? '' : 'un') + "checked")
                             }

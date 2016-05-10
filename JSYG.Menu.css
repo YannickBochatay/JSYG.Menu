@@ -32,6 +32,10 @@ ul.jsyg-menu a {
 ul.jsyg-menu a .menuIcon, ul.jsyg-menu .menuCheckbox {
     display:inline-block;
     width:1.5em;
+    vertical-align:middle;
+}
+ul.jsyg-menu .menuCheckbox {
+    color:black;
 }
 ul.jsyg-menu a:focus {
     background-color:#e5ecff;

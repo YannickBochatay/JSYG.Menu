@@ -2,8 +2,16 @@
 Menu plugin originally designed for [JSYG framework](https://github.com/YannickBochatay/JSYG), but it works as well as a jQuery plugin.
 Fits well with Bootstrap.
 
-[demo](http://yannickbochatay.github.io/JSYG.Menu/)
+##### Demo
+[http://yannickbochatay.github.io/JSYG.Menu/](http://yannickbochatay.github.io/JSYG.Menu/)
 
+##### Installation
+```shell
+npm install jsyg-menu
+```
+You can also install it with bower
+
+##### Example
 ```javascript
 //basic Menu
 $('#ulElement').jMenu([{

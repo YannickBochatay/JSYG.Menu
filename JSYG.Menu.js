@@ -3,7 +3,14 @@
 
 (function(root,factory) {
     
-    if (typeof define != "undefined" && define.amd) define("jsyg-menu",["jquery","jsyg-stdconstruct","jquery-hotkeys"],factory);
+    if (typeof module == "object" && typeof module.exports == "object") {
+      
+      module.exports = factory( require("jquery"), require("jsyg-stdconstruct"), require("jquery.hotkeys") );
+    }
+    else if (typeof define != "undefined" && define.amd) {
+      
+      define("jsyg-menu",["jquery","jsyg-stdconstruct","jquery.hotkeys"],factory);
+    }
     else if (typeof jQuery != "undefined") {
         
         if (typeof JSYG!= "undefined" && typeof JSYG.StdConstruct != "undefined") factory(jQuery,JSYG.StdConstruct);
@@ -55,7 +62,10 @@
                     if (n == 'submenu' && Array.isArray(opt.submenu)) {
                         
                         submenu = new Menu();
-                        opt.submenu.forEach(function(item) { submenu.addItem(item); });
+                        opt.submenu.forEach(function(item) {
+                            if (item == "divider") submenu.addDivider();
+                            else submenu.addItem(item);
+                        });
                         this.submenu = submenu;
                     }
                     else cible[n] = opt[n];
@@ -148,7 +158,7 @@
          */
         if (!arg) arg = document.createElement('ul');
         
-        if (arg) this.node = $(arg)[0];
+        if (arg) this.container = $(arg)[0];
         /**
          * Tableau d'objets MenuItem définissant la liste des éléments du menu
          */
@@ -174,7 +184,10 @@
         
         if (Array.isArray(opt)) {
             this.clear();
-            opt.forEach(function(item) { that.addItem(item); });
+            opt.forEach(function(item) {
+                if (item == "divider") that.addDivider();
+                else that.addItem(item);
+            });
             return cible;
         }
         
@@ -309,9 +322,11 @@
      */
     Menu.prototype.addItem = function(item,ind) {
         
+        var that = this;
+        
         if (ind == null) ind = this.list.length;
         
-        if ($.isPlainObject(item)) item = new MenuItem(item);		
+        if ($.isPlainObject(item)) item = new MenuItem(item);	
         
         if (item instanceof MenuItem) {
             
@@ -322,6 +337,10 @@
                 if (item.globalShortcut) this._enableGlobalShortcut(item);
             }
             else throw new Error("L'item existe déjà");
+        }
+        else if (Array.isArray(item)) {
+            
+            item.forEach(function(item) { that.addItem(item); });
         }
         else throw new Error(item + " n'est pas une instance de MenuItem");
         
@@ -425,13 +444,13 @@
         
         if (item.checkbox) this._checkItem(item,!item.checked);
         
-        node = this.node,
+        node = this.container,
         menu = this;
         
         //on récupère l'élément
         while (!node && menu) {
             menu = menu.parentMenu;
-            node = menu && menu.node;
+            node = menu && menu.container;
         }
         
         item.action.call(node,e,item.checked);
@@ -478,7 +497,7 @@
         
         item.submenu.parent = li[0];
         
-        $(item.submenu.node).css('visibility','hidden');
+        $(item.submenu.container).css('visibility','hidden');
         
         item.submenu.show(delay,function(ul) {
             
@@ -629,7 +648,7 @@
         
         this._clear();
         
-        var jCont = $(this.node)
+        var jCont = $(this.container)
             .addClass(this.className)
             .on({
                 contextmenu : function(e) { e.preventDefault(); },
@@ -743,7 +762,7 @@
         
         var classDisabled = this.classDisabled;
         this.list.forEach(function(elmt) { $(elmt.container).removeClass(classDisabled).empty().remove(); });
-        $(this.node).empty();
+        $(this.container).empty();
         this.keyboardCtrls.disable();
     };
     
@@ -760,7 +779,7 @@
         
         this.hide();
         
-        $(this.node).appendTo(this.parent);
+        $(this.container).appendTo(this.parent);
         
         this.parentMenu && this.parentMenu.keyboardCtrls.disable();
         
@@ -768,7 +787,7 @@
         
         this.display = true;
         
-        callback && callback(this.node);
+        callback && callback(this.container);
         
         this.trigger('show');
         
@@ -799,7 +818,7 @@
         
         this.keyboardCtrls.disable();
         
-        $(this.node).detach();
+        $(this.container).detach();
         
         this.keyboardCtrls.disable();
         
