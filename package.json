@@ -1,6 +1,6 @@
 {
   "name": "jsyg-menu",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "general menu for jsyg framework or standalone with jQuery",
   "main": "JSYG.Menu.js",
   "directories": {
@@ -28,7 +28,7 @@
   "dependencies": {
     "jquery": "^2.2.3",
     "jquery.hotkeys": "^0.1.0",
-    "jsyg-stdconstruct": "^0.1.4"
+    "jsyg-stdconstruct": ""
   },
   "devDependencies": {
     "bootstrap": "^3.3.6",
