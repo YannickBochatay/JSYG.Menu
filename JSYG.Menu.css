@@ -31,7 +31,7 @@ ul.jsyg-menu a {
 }
 ul.jsyg-menu a .menuIcon, ul.jsyg-menu .menuCheckbox {
     display:inline-block;
-    width:1.5em;
+    width:16px;
     vertical-align:middle;
 }
 ul.jsyg-menu .menuCheckbox {
